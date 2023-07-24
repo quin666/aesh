@@ -543,64 +543,7 @@ public class PagingSupport {
                         if (k == null) { // interrupted, exit.
                             paging.exit();
                         } else {
-                            switch (k) {
-                                case SPACE:
-                                case PGDOWN_2:
-                                case PGDOWN: {
-                                    paging.pageDown();
-                                    break;
-                                }
-                                case BACKSLASH:
-                                case PGUP_2:
-                                case PGUP: {
-                                    paging.pageUp();
-                                    break;
-                                }
-                                case N: {
-                                    paging.previousMatch();
-                                    break;
-                                }
-                                case n: {
-                                    paging.nextMatch();
-                                    break;
-                                }
-                                case SLASH: {
-                                    paging.search();
-                                    break;
-                                }
-                                case SEMI_COLON:
-                                case UP_2:
-                                case UP: {
-                                    paging.lineUp();
-                                    break;
-                                }
-                                case DOWN:
-                                case DOWN_2:
-                                case ENTER:
-                                case CTRL_M: { // On Mac, CTRL_M...
-                                    paging.lineDown();
-                                    break;
-                                }
-                                case HOME:
-                                case HOME_2:
-                                case g: {
-                                    paging.goHome();
-                                    break;
-                                }
-                                case END:
-                                case END_2:
-                                case END_3:
-                                case G: {
-                                    paging.goEnd();
-                                    break;
-                                }
-                                case Q:
-                                case ESC:
-                                case q: {
-                                    paging.exit();
-                                    break;
-                                }
-                            }
+                           switchCase(k);
                         }
                     } catch (InterruptedException ex) {
                         getConnection().write(ANSI.CURSOR_RESTORE);
@@ -621,6 +564,66 @@ public class PagingSupport {
         }
     }
 
+    private void switchCase(Key k) throws InterruptedException, IOException {
+        switch (k) {
+            case SPACE:
+            case PGDOWN_2:
+            case PGDOWN: {
+                paging.pageDown();
+                break;
+            }
+            case BACKSLASH:
+            case PGUP_2:
+            case PGUP: {
+                paging.pageUp();
+                break;
+            }
+            case N: {
+                paging.previousMatch();
+                break;
+            }
+            case n: {
+                paging.nextMatch();
+                break;
+            }
+            case SLASH: {
+                paging.search();
+                break;
+            }
+            case SEMI_COLON:
+            case UP_2:
+            case UP: {
+                paging.lineUp();
+                break;
+            }
+            case DOWN:
+            case DOWN_2:
+            case ENTER:
+            case CTRL_M: { // On Mac, CTRL_M...
+                paging.lineDown();
+                break;
+            }
+            case HOME:
+            case HOME_2:
+            case g: {
+                paging.goHome();
+                break;
+            }
+            case END:
+            case END_2:
+            case END_3:
+            case G: {
+                paging.goEnd();
+                break;
+            }
+            case Q:
+            case ESC:
+            case q: {
+                paging.exit();
+                break;
+            }
+        }
+    }
     private Key read() throws InterruptedException {
         ActionDecoder decoder = new ActionDecoder();
         final Key[] key = {null};

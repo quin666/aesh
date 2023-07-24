@@ -65,6 +65,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.aesh.parser.ParsedLineWords.firstWord;
+
 /**
  * Implementation of the Command processor.
  *
@@ -242,7 +244,7 @@ public class AeshCommandRuntime<CI extends CommandInvocation>
         if (aeshLine.words().isEmpty()) {
             return null;
         }
-        final String name = aeshLine.firstWord().word();
+        final String name = firstWord(aeshLine.words()).word();
         CommandContainer<CI> container =
                 commandResolver.resolveCommand(name, aeshLine.line());
         if (container == null) {

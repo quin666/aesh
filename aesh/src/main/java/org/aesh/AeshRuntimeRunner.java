@@ -121,20 +121,7 @@ public class AeshRuntimeRunner {
 
             final String commandName = commandNames.iterator().next();
             StringBuilder sb = new StringBuilder(commandName);
-            if (args != null && args.length > 0) {
-                sb.append(" ");
-                if (args.length == 1) {
-                    sb.append(args[0]);
-                } else {
-                    for (String arg : args) {
-                        if (arg.indexOf(' ') >= 0) {
-                            sb.append('"').append(arg).append("\" ");
-                        } else {
-                            sb.append(arg).append(' ');
-                        }
-                    }
-                }
-            }
+            conditions(sb);
 
             CommandResult result = null;
             try {
@@ -154,7 +141,22 @@ public class AeshRuntimeRunner {
             throw new RuntimeException("Exception while executing command: " + e.getMessage());
         }
     }
-
+private void conditions(StringBuilder sb) {
+    if (args != null && args.length > 0) {
+        sb.append(" ");
+        if (args.length == 1) {
+            sb.append(args[0]);
+        } else {
+            for (String arg : args) {
+                if (arg.indexOf(' ') >= 0) {
+                    sb.append('"').append(arg).append("\" ");
+                } else {
+                    sb.append(arg).append(' ');
+                }
+            }
+        }
+    }
+}
     private static void showHelpIfNeeded(CommandRuntime runtime, String commandName, Exception e) {
         if (e != null) {
             System.err.println(e.getMessage());

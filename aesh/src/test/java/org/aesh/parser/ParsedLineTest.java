@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.aesh.parser.ParsedLineWords.firstWord;
 import static org.junit.Assert.*;
 
 /**
@@ -17,7 +18,7 @@ public class ParsedLineTest {
         List<ParsedWord> words = new ArrayList<>();
         ParsedLine pl = new ParsedLine("", words, -1,
                 0, 0, ParserStatus.OK, "", OperatorType.NONE);
-        assertEquals(pl.firstWord().word(), "");
+        assertEquals(firstWord(pl.words()).word(), "");
     }
 
     @Test
@@ -29,7 +30,7 @@ public class ParsedLineTest {
 
         ParsedLine pl = new ParsedLine("command line text", words, -1,
                 0, 0, ParserStatus.OK, "", OperatorType.NONE);
-        assertEquals(pl.firstWord().word(), "command");
+        assertEquals(firstWord(pl.words()).word(), "command");
     }
 
 }

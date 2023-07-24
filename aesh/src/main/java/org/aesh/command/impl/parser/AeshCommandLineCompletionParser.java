@@ -40,6 +40,8 @@ import org.aesh.selector.SelectorType;
 
 import java.util.List;
 
+import static org.aesh.parser.ParsedLineWords.lastWord;
+
 /**
  * @author <a href="mailto:stale.pedersen@jboss.org">Ståle W. Pedersen</a>
  */
@@ -61,7 +63,7 @@ public class AeshCommandLineCompletionParser<CI extends CommandInvocation> imple
         if(parser.getProcessedCommand().completeStatus().status().equals(CompleteStatus.Status.COMPLETE_OPTION)) {
             //space and end, we display other options/arguments or option value if the option have a list of values
             //- if it ends with a separator we also try to complete an option value
-            ParsedWord.Status selectedWordStatus = line.selectedWord() != null ? line.selectedWord().status() : line.lastWord().status();
+            ParsedWord.Status selectedWordStatus = line.selectedWord() != null ? line.selectedWord().status() : lastWord(line.words()).status();
             if ((line.spaceAtEnd() || parser.lastParsedOption().getEndsWithSeparator()) && selectedWordStatus == ParsedWord.Status.OK) {
                 if(parser.lastParsedOption() != null) {
                         if (parser.lastParsedOption().getValue() == null ||
@@ -150,7 +152,7 @@ public class AeshCommandLineCompletionParser<CI extends CommandInvocation> imple
             //complete value
             else {
                 doCompleteOptionValue(invocationProviders, completeOperation,
-                        parser.lastParsedOption(),line.selectedWord() != null ? line.selectedWord().status() : line.lastWord().status());
+                        parser.lastParsedOption(),line.selectedWord() != null ? line.selectedWord().status() : lastWord(line.words()).status());
             }
         }
         //argument

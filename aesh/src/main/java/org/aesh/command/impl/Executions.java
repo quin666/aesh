@@ -64,6 +64,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.aesh.parser.ParsedLineWords.firstWord;
+
 /**
  *
  * @author jdenise@redhat.com
@@ -339,7 +341,7 @@ class Executions {
                         if (config == null) {
                             throw new IllegalArgumentException("Invalid " + pl.line());
                         }
-                        config.setArgument(pl.firstWord().word());
+                        config.setArgument(firstWord(pl.words()).word());
                         state = State.NEED_OPERATOR;
                         break;
                     }

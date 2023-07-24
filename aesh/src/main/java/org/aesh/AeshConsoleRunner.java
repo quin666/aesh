@@ -107,22 +107,14 @@ public class AeshConsoleRunner {
     }
 
     public void start() {
-        if(console == null) {
+        if (console == null) {
             init();
-            if(prompt != null)
-                console.setPrompt(prompt);
-            try {
-                console.start();
-            }
-            catch (IOException e) {
-                throw new RuntimeException("Exception while starting the console: "+e.getMessage());
-            }
+            aeshConsoleActions.start(prompt, console);
         }
     }
 
     public void stop() {
-        if(console != null && console.running())
-            console.stop();
+        aeshConsoleActions.stop(console);
     }
 
     @SuppressWarnings("unchecked")
@@ -170,12 +162,38 @@ public class AeshConsoleRunner {
         }
     }
 
+    public ReadlineConsole getConsole() {
+        return console;
+    }
+
+    public Prompt getPrompt() {
+        return prompt;
+    }
+
     @CommandDefinition(name = "exit", description = "exit the program", aliases = {"quit"})
     public static class ExitCommand implements Command {
         @Override
         public CommandResult execute(CommandInvocation commandInvocation) {
             commandInvocation.stop();
             return CommandResult.SUCCESS;
+        }
+    }
+
+    private static class aeshConsoleActions {
+
+        private static void start(Prompt prompt, ReadlineConsole console) {
+            if (prompt != null)
+                console.setPrompt(prompt);
+            try {
+                console.start();
+            } catch (IOException e) {
+                throw new RuntimeException("Exception while starting the console: " + e.getMessage());
+            }
+        }
+
+        private static void stop(ReadlineConsole console) {
+            if (console != null && console.running())
+                console.stop();
         }
     }
 }

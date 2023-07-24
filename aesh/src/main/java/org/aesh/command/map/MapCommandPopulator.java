@@ -30,6 +30,7 @@ import java.util.Objects;
 import org.aesh.command.Command;
 import org.aesh.command.impl.internal.ProcessedCommand;
 import org.aesh.command.impl.internal.ProcessedOption;
+import org.aesh.command.impl.internal.convert;
 import org.aesh.command.impl.parser.CommandLineParser;
 import org.aesh.command.invocation.CommandInvocation;
 import org.aesh.command.populator.CommandPopulator;
@@ -75,16 +76,16 @@ public class MapCommandPopulator<O extends Object, CI extends CommandInvocation>
             if (processedCommand.getArguments().getValues().size() > 0) {
                 List<Object> tmpSet = new ArrayList<>();
                 for (String in : processedCommand.getArguments().getValues()) {
-                    tmpSet.add(processedCommand.getArguments().doConvert(in, invocationProviders,
-                            instance, aeshContext, validate == CommandLineParser.Mode.VALIDATE));
+                    tmpSet.add(processedCommand.getArguments().doConvert(in,
+                            new convert(invocationProviders, instance, aeshContext, validate == CommandLineParser.Mode.VALIDATE)));
                 }
                 instance.setValue(processedCommand.getArguments().name(), tmpSet);
             } else if (processedCommand.getArguments().getDefaultValues().size() > 0 &&
                      processedCommand.getArguments().selectorType() == SelectorType.NO_OP) {
                 List<Object> tmpSet = new ArrayList<>();
                 for (String in : processedCommand.getArguments().getDefaultValues()) {
-                    tmpSet.add(processedCommand.getArguments().doConvert(in, invocationProviders,
-                            instance, aeshContext, validate == CommandLineParser.Mode.VALIDATE));
+                    tmpSet.add(processedCommand.getArguments().doConvert(in,
+                            new convert(invocationProviders, instance, aeshContext, validate == CommandLineParser.Mode.VALIDATE)));
                 }
                 instance.setValue(processedCommand.getArguments().name(), tmpSet);
             } else {
@@ -98,8 +99,8 @@ public class MapCommandPopulator<O extends Object, CI extends CommandInvocation>
                 if (val != null) {
                     instance.setValue(processedCommand.getArgument().name(),
                             processedCommand.getArgument().
-                            doConvert(val, invocationProviders, instance, aeshContext,
-                                    validate == CommandLineParser.Mode.VALIDATE));
+                            doConvert(val,
+                                    new convert(invocationProviders, instance, aeshContext, validate == CommandLineParser.Mode.VALIDATE)));
                 } else if (processedCommand.getArgument().getDefaultValues().size() > 0 &&
                          processedCommand.getArguments().selectorType() == SelectorType.NO_OP) {
                     instance.setValue(processedCommand.getArgument().name(),
@@ -121,8 +122,8 @@ public class MapCommandPopulator<O extends Object, CI extends CommandInvocation>
             if (!unknownOptions.containsKey(option.name())) {
                 if (option.getValue() != null) {
                     instance.setValue(option.name(),
-                            option.doConvert(option.getValue(), invocationProviders,
-                                    instance, aeshContext, validate == CommandLineParser.Mode.VALIDATE));
+                            option.doConvert(option.getValue(),
+                                    new convert(invocationProviders, instance, aeshContext, validate == CommandLineParser.Mode.VALIDATE)));
                 } else if (option.getDefaultValues().size() > 0) {
                     instance.setValue(option.name(), option.getDefaultValues().get(0));
                 } else {
